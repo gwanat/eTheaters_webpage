@@ -1,7 +1,9 @@
 ﻿using eTheaters.Data;
+using eTheaters.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +27,11 @@ namespace eTheaters
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<AppDbContext>();
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString
+                ("DefaultConnectionString")));
+
+            services.AddScoped<IActorsService, ActorsService>();
+            services.AddScoped<IDirectorsService, DirectorsService>();
 
             services.AddControllersWithViews();
         }
@@ -56,6 +62,8 @@ namespace eTheaters
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            AppDbInitializer.Seed(app);
         }
     }
 }

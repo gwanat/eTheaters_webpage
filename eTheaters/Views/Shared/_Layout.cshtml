@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/eTheaters.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
@@ -19,18 +20,32 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <li class="navbar-nav flex-grow-1">
+                            <a class=" nav-link text-dark" asp-controller="Plays" asp-action="Index"> <i class="badge-info bi-ticket-perforated"></i> Plays</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="button" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-gear"></i> Management
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="Theaters" asp-action="Index"><i class="bi bi-houses"></i> Theaters</a>
+                                <a class="dropdown-item" asp-controller="Directors" asp-action="Index"><i class="bi bi-headset"></i> Directors</a>
+                                <a class="dropdown-item" asp-controller="Actors" asp-action="Index"><i class="bi bi-person-square"></i> Actors</a>
+                            </div>
                         </li>
                     </ul>
+                    <form class="form-inline my-2 my-lg-0" asp-controller="Plays" asp-action="Filter" style="padding-right: 25px; display:flex;">
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for a play..">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -38,7 +53,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - eTheaters - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - eTheaters
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
