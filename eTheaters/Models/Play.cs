@@ -1,10 +1,11 @@
-﻿using eTheaters.Data.Enums;
+﻿using eTheaters.Data.Base;
+using eTheaters.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eTheaters.Models
 {
-    public class Play
+    public class Play : IEntityBase
     {
         [Key]
         public int Id { get; set; }

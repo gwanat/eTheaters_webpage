@@ -1,9 +1,10 @@
 ﻿using eTheaters.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace eTheaters.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -30,5 +31,10 @@ namespace eTheaters.Data
         public DbSet<Actor_Play> Actors_Plays { get; set; }
         public DbSet<Theater> Theaters { get; set; }
         public DbSet<Director> Directors { get; set; }
+
+        //ORDERS
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set;}
     }
 }

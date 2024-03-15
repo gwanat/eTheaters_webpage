@@ -1,10 +1,13 @@
 ﻿using eTheaters.Data;
 using eTheaters.Data.Services;
+using eTheaters.Data.Static;
 using eTheaters.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eTheaters.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ActorsController : Controller
     {
         private readonly IActorsService _service;
@@ -14,6 +17,7 @@ namespace eTheaters.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();
@@ -38,6 +42,7 @@ namespace eTheaters.Controllers
         }
 
         //GET: Actors/Details
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);

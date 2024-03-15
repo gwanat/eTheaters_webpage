@@ -1,11 +1,14 @@
 ﻿using eTheaters.Data;
 using eTheaters.Data.Services;
+using eTheaters.Data.Static;
 using eTheaters.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace eTheaters.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class DirectorsController : Controller
     {
         private readonly IDirectorsService _service;
@@ -15,6 +18,7 @@ namespace eTheaters.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var AllDirectors = await _service.GetAllAsync();
@@ -22,6 +26,7 @@ namespace eTheaters.Controllers
         }
 
         //GET: Directors/Details
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var directorDetails = await _service.GetByIdAsync(id);

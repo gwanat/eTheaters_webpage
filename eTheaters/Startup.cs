@@ -1,8 +1,12 @@
 ﻿using eTheaters.Data;
+using eTheaters.Data.Cart;
 using eTheaters.Data.Services;
+using eTheaters.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +36,20 @@ namespace eTheaters
 
             services.AddScoped<IActorsService, ActorsService>();
             services.AddScoped<IDirectorsService, DirectorsService>();
+            services.AddScoped<ITheatersService, TheatersService>();
+            services.AddScoped<IPlaysService, PlaysService>();
+            services.AddScoped<IOrdersService, OrdersService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddMemoryCache();
+            services.AddSession();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
 
             services.AddControllersWithViews();
         }
@@ -53,6 +71,10 @@ namespace eTheaters
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseAuthorization();
 
@@ -64,6 +86,7 @@ namespace eTheaters
             });
 
             AppDbInitializer.Seed(app);
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }

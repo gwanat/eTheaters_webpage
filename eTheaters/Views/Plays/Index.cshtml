@@ -3,19 +3,25 @@
 @{
     ViewData["Title"] = "List of Plays";
 }
-
-<div class="row">
+<div class="container">
+<div class="row justify-content-center">
     @foreach (var item in Model)
     {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
-            <div class="card mb-3" style="max-width: 540px;">
+        <div class="col-md-6 mb-3">
+            <div class="border-primary">
+                    <div class="card mb-3" style="max-width: 540px; margin-left: auto; margin-right: auto;">
                 <div class="row g-0">
                     <div class="col-md-12">
-                        <div class="card-header text-white bg-info">
+                        <div class="card-header text-white bg-secondary">
                             <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.Name
-                                    <a class="text-white float-right"><i class="bi bi-pencil-square"></i></a>
+                                <h5 class="card-title d-flex justify-content-between">
+                                    <span>@item.Name</span>
+
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        <a class="text-white" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                    }
+
                                 </h5>
                             </p>
                         </div>
@@ -24,7 +30,7 @@
                         <img src="@item.ImageURL" width="100%" alt="@item.Name">
                     </div>
                     <div class="col-md-6">
-                        <div class="card-body">
+                                <div class="card-body text-left">
                             <p class="card-text">@item.Description</p>
                             <p class="card-text"><b>Theater: </b>@item.Theater.Name</p>
                             <p class="card-text"><b>Category: </b>@item.PlayCategory</p>
@@ -49,14 +55,25 @@
                     <div class="col-md-12">
                         <div class="card-footer ">
                             <p class="card-text">
-                                <a class="btn btn-outline-primary float-right"><i class="bi bi-eye-fill"></i> Show Details</a>
-                                <a class="btn btn-success text-white"><i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))
+                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details</a>
+                                <a class="btn @(DateTime.Now > item.EndDate ? "btn-outline-secondary disabled" : "btn-success")"
+                                   asp-controller="Orders"
+                                   asp-action="AddItemToShoppingCart"
+                                   asp-route-id="@item.Id">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @item.Price.ToString("c"))
                                 </a>
+
+
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     }
 </div>
+</div>
+
+@await Html.PartialAsync("_CreateItem", "Plays")

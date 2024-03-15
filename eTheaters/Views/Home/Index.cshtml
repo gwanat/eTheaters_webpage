@@ -2,7 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center mb-4">
+            <h1 class="display-4" style="margin-bottom: 30px;">Welcome to my website!</h1>
+            <p>This is my first web application project.</p>
+            <p>Explore more by using anything on the navigation bar or clicking on the button below.</p>
+            <p>
+                To log in as an admin account and to be able to use management console use:<br>
+                Email: admin@etheaters.com<br>
+                Password: Project!67498<br><br>
+
+                To log in as a normal user you can use:<br>
+                Email: user@etheaters.com<br>
+                Password: Project!67498<br>
+                or create your own account with a "Register" button
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-end">
+            <a asp-action="Index" asp-controller="Plays" class="btn btn-secondary" style="position:fixed; bottom:85px; right:20px;">Go to Plays</a>
+        </div>
+    </div>
 </div>

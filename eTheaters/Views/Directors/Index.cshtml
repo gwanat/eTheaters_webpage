@@ -13,7 +13,11 @@
                     <th>@Html.DisplayNameFor(model => model.Picture)</th>
                     <th>@Html.DisplayNameFor(model => model.FullName)</th>
                     <th>@Html.DisplayNameFor(model => model.Bio)</th>
-                    <th>Actions</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                       <th>Actions</th>  
+                    }
+
                 </tr>
             </thead>
 
@@ -21,20 +25,24 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="align-middle">
+                        <td class="align-middle text-center">
                             <img class="rounded-circle" src="@item.Picture" alt="@item.FullName" style="max-width: 150px" />
                         </td>
-                        <td class="align-middle">
+                        <td class="align-middle text-center">
                             @Html.DisplayFor(modelItem => item.FullName)
                         </td>
-                        <td class="align-middle">
+                        <td class="align-middle text-center">
                             @Html.DisplayFor(modelItem => item.Bio)
                         </td>
-                        <td class="align-middle">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle text-center">
                             <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a> |
                             <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a> |
                             <a class="btn btn-danger text-white" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
-                        </td>
+                            </td> 
+                        }
+                        
                     </tr>
                 }
             </tbody>
@@ -44,6 +52,4 @@
     </div>
 </div>
 
-<div style="position: fixed; right: 25px; bottom: 85px;" class="text-white">
-    <a asp-controller="Directors" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add New </a>
-</div>
+@await Html.PartialAsync("_CreateItem", "Directors")
